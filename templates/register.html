@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block container %}
+    <!-- Page Content -->
+    <div class="container" style="min-height: 80vh;">
+
+        <!-- Page Heading/Breadcrumbs -->
+        <h1 class="mt-4 mb-3">Register
+            <small>Form</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active">Register</li>
+        </ol>
+        <!-- Content Row -->
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="control-group form-group">
+                        <div class="controls">
+                            <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}*</label>
+                            <input name="{{ form.first_name.name }}" type="text" class="form-control" id="{{ form.first_name.id_for_label }}" required />
+                            <p class="help-block"></p>
+                            {% for error in form.first_name.errors %}
+                            <small id="error_{{ form.first_name.id_for_label }}" class="form-text text-right text-danger">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="control-group form-group">
+                        <div class="controls">
+                            <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}*</label>
+                            <input name="{{ form.last_name.name }}" type="text" class="form-control" id="{{ form.last_name.id_for_label }}" required />
+                            {% for error in form.last_name.errors %}
+                            <small id="error_{{ form.last_name.id_for_label }}" class="form-text text-right text-danger">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="control-group form-group">
+                        <div class="controls">
+                            <label for="{{ form.username.id_for_label }}">{{ form.username.label }}*</label>
+                            <input name="{{ form.username.name }}" type="text" class="form-control" id="{{ form.username.id_for_label }}" required />
+                            {% for error in form.username.errors %}
+                            <small id="error_{{ form.username.id_for_label }}" class="form-text text-right text-danger">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="control-group form-group">
+                        <div class="controls">
+                            <label for="{{ form.email.id_for_label }}">{{ form.email.label }}*</label>
+                            <input name="{{ form.email.name }}" type="email" class="form-control" id="{{ form.email.id_for_label }}" required />
+                            {% for error in form.email.errors %}
+                            <small id="error_{{ form.email.id_for_label }}" class="form-text text-right text-danger">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="control-group form-group">
+                        <div class="controls">
+                            <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}*</label>
+                            <input name="{{ form.password1.name }}" type="password" class="form-control" id="{{ form.password1.id_for_label }}" required />
+                            {% for error in form.password1.errors %}
+                            <small id="error_{{ form.password1.id_for_label }}" class="form-text text-right text-danger">{{ error }}</small>
+                            {% endfor %}
+                            {% if form.password1.help_text %}
+                            {{ form.password1.help_text }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="control-group form-group">
+                        <div class="controls">
+                            <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}*</label>
+                            <input name="{{ form.password2.name }}" type="password" class="form-control" id="{{ form.password2.id_for_label }}" required>
+                            {% for error in form.password2.errors %}
+                            <small id="error_{{ form.password2.id_for_label }}" class="form-text text-right text-danger">{{ error }}</small>
+                            {% endfor %}
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div id="success"></div>
+                    <!-- For success/fail messages -->
+                    <button type="submit" class="btn btn-primary" id="login-btn">Register</button>
+                </form>
+            </div>
+        </div>
+        <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+{% endblock container %}
+

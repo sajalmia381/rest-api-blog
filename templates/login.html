@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block container %}
+  <!-- Page Content -->
+  <div class="container" style="min-height: 80vh;">
+
+    <!-- Page Heading/Breadcrumbs -->
+    <h1 class="mt-4 mb-3">Login
+      <small>Form</small>
+    </h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active">Login</li>
+    </ol>
+    <!-- Content Row -->
+    <div class="row">
+      <div class="col-lg-4 mb-4">
+        <form method="post">
+          {% csrf_token %}
+          <div class="control-group form-group">
+            <div class="controls">
+              <label for="id_username">Username</label>
+              <input name="username" type="text" class="form-control" id="id_username" required>
+                <p class="help-block"></p>
+            </div>
+          </div>
+          <div class="control-group form-group">
+            <div class="controls">
+              <label for="id_password">{{form.password.label}}</label>
+              <input name="password" type="password" class="form-control" id="id_password" required />
+            </div>
+          </div>
+            {% if messages %}
+            <div id="success" class="list-group messages mt-2">
+                {% for message in messages %}
+                <div class="alert {% if message.tags %}{{ message.tags }}{% endif %} py-2 h6" role="alert">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+          <!-- For success/fail messages -->
+          <button type="submit" class="btn btn-primary" id="login-btn">Login</button>
+        </form>
+      </div>
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+{% endblock container %}
+
