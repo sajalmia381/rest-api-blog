@@ -1,0 +1,20 @@
+{
+  "name": "simple-blog",
+  "version": "1.0.1",
+  "description": "BLog rest api with django view, react included application",
+  "main": "index.js",
+  "repository": "https://github.com/sajalmia381/rest-api-blog.git",
+  "author": "Md Sajal Mia <sajalmia381@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "heroku-prebuild": "NODE_ENV=production cd frontend/ && yarn install && yarn build && cd .."
+  },
+  "cacheDirectories": [
+    "frontend/node_modules"
+  ],
+  "engines": {
+    "node": "10.20.1",
+    "npm": "6.14.5"
+  }
+}
