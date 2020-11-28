@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Link, useHistory } from 'react-router-dom';
 
 
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -10,6 +10,12 @@ import { NotFound, Home, BlogList, BlogDetails, Login, Register as SignUp } from
 
 
 function App() {
+    let history = useHistory()
+    const LogoutHandler = () => {
+        localStorage.removeItem('access')
+        console.dir(history)
+        // history.push('/login')
+    }
    return (
       <Router>
          <div className="App">
@@ -25,19 +31,25 @@ function App() {
                               <li className="nav-item">
                                   <Link className="nav-link" to="/posts">Posts</Link>
                               </li>
-                              <li className="nav-item">
-                                  <Link className="nav-link" to="/login">Login</Link>
-                              </li>
-                              <li className="nav-item">
-                                  <Link className="nav-link" to="/register">Register</Link>
-                              </li>
+                              {
+                                  localStorage.getItem('access') ? <li className="nav-item">
+                                    <Link className="nav-link" to="" onClick={LogoutHandler}>Logout</Link>
+                                </li> : <>
+                                        <li className="nav-item">
+                                            <Link className="nav-link" to="/login">Login</Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link className="nav-link" to="/register">Register</Link>
+                                        </li>
+                                        </>
+                            }
                           </ul>
                       </div>
                   </div>
               </nav>
             </header>
             <Switch>
-               <Route path='/posts/:id' component={BlogDetails} />
+               <Route path='/posts/:slug' component={BlogDetails} />
                <Route path='/login' component={Login} />
                <Route path='/register' component={SignUp} />
                <Route path='/posts' exact component={BlogList} />

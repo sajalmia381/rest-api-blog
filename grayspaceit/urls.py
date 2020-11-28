@@ -18,19 +18,15 @@ from django.urls import path, include, re_path
 from django.conf.urls.static import static
 from django.conf import settings
 
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
 
 from posts.views import posts, ReactFrontendView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('authentication.urls')),
+    path('auth/', include('authentication.urls')),
+    path('api/auth/', include('authentication.api.urls')),
     path('posts/', include('posts.urls')),
     path('', posts),
+    path('api/', include('posts.api.urls')),
     re_path(r'^react/', ReactFrontendView.as_view()),
-    path('api/auth/token', TokenObtainPairView.as_view(), name='auth_token_obtain_pair'),
-    path('api/auth/token/refresh', TokenRefreshView.as_view(), name='auth_token_refresh'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

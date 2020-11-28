@@ -1,41 +1,50 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { getblogList } from '../api';
+import API from '../api';
 import { CardList } from '../components';
 
 class BlogList extends Component {
     state = {
         list: [],
-        loading: true
+        loading: true,
+        errors: ''
     }
 
     async componentDidMount() {
-        let data = await getblogList()
-        if(!data.hasOwnProperty('error')){
-            this.setState({list: data, loading: false})
+        try{
+            const {data} = await API.get('/blogs');
+            if(!data.hasOwnProperty('error')){
+                this.setState({list: data, loading: false, errors: ''})
+            }
+        } catch (err) {
+            this.setState({loading: false, errors: err.response.data})
         }
+        
         // this.setState{list: data, loading: false}
     }
 
     render() {
-        const {loading, list} = this.state
-
+        const {loading, errors, list} = this.state
         return (
             <section>
                 <div className="container">
                 <h1 className="mt-4 mb-3">Blog Home Two
                 <small>Subheading</small>
                 </h1>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
+                <ol className="breadcrumb">
+                    <li className="breadcrumb-item">
                         <Link to="/">Home</Link>
                     </li>
-                    <li class="breadcrumb-item active">Blog List</li>
+                    <li className="breadcrumb-item active">Blog List</li>
                 </ol>
-                    {!loading ? list.map(({ user_id, id, title, body }, index) => {
-                        return <CardList user_id={user_id} id={id} title={title} body={body} />
-                    } ) :  <div className="spinner-border" role="status">
+                    {!loading
+                    ? errors
+                    ? <div className="text-center my-5 alert alert-danger">{errors['detail']}</div>   
+                    : list.map(({ user: {username}, category: {name}, id, title, slug, content, created_at}, index) => {
+                        return <CardList key={slug} categoryName={name} created_at={created_at} username={username} slug={slug} title={title} content={content}/>
+                    }) 
+                    : <div className="spinner-border" role="status">
                     <span className="sr-only">Loading...</span>
                   </div>}
                 </div>

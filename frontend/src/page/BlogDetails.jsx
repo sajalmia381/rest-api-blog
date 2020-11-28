@@ -2,39 +2,44 @@ import React, { Component } from 'react';
 
 import {Link} from 'react-router-dom';
 
-import {getSingleBlog} from '../api'
+import API from '../api'
 
 class BlogDetails extends Component {
     state = {
         loading: true,
-        object: {}
+        object: {},
+        errors: ''
     }
     async componentDidMount() {
-        let post_id = this.props.match.params.id
+        let slug = this.props.match.params.slug
         try{
-            let obj = await getSingleBlog(post_id)
-            this.setState({loading: false, object: obj})
-        } catch(err) {
-            console.error(err)
+            let {data} = await API.get(`blogs/${slug}`)
+            this.setState({loading: false, object: data, errors: ''})
+        } catch(res) {
+            const err = res.toJSON()
+            this.setState({loading: false, errors: err.message, object: {}})
         }
     }
     render() {
-        const { loading, object} = this.state
+        const { loading, object, errors} = this.state
+        console.log(loading, object, errors)
         return (
             <div className="container">
-                <h1 className="mt-4 mb-3">Post Title
+                <h4 className="mt-4 mb-3">Post Title
                 <small>by
                     <Link to="">Start Bootstrap</Link>
                 </small>
-                </h1>
+                </h4>
                 <ol className="breadcrumb">
                 <li className="breadcrumb-item">
                     <Link to="/">Home</Link>
                 </li>
                 <li className="breadcrumb-item active"></li>
                 </ol>
-                {!loading ? 
-                <div className="row">
+                {!loading 
+                ? errors
+                ? <div className="alert alert-danger">{errors}</div>
+                : <div className="row">
 
                 <div className="col-lg-8">
 
@@ -42,13 +47,13 @@ class BlogDetails extends Component {
 
                     <hr />
 
-                    <p>Posted on January 1, 2017 at 12:00 PM</p>
+                <p>Posted on {object.created_at}</p>
 
                     <hr />
 
                 <p className="lead">{object.title}</p>
 
-                <p>{object.body}</p>
+                <p>{object.content}</p>
                     <hr />
 
                     <div className="card my-4">
